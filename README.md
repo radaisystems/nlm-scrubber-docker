@@ -13,7 +13,9 @@ This package includes three components-
 
 The docker image can be downloaded from [docker hub](https://hub.docker.com/r/radaisystems/nlm-scrubber) or built via `make build`.
 
-Once run the container will deidentify anything in `/tmp/once_off/input` and output it to `/tmp/once_off/output`. The input files can be limited by defining the `SCRUBBER_REGEX` environmental variables.
+Once run the container will deidentify anything in `/tmp/once_off/input` and output it to `/tmp/once_off/output` (these directories are *inside* the container). The input files can be limited by defining the `SCRUBBER_REGEX` environmental variables.
+
+Mounting a local volume to `/tmp/once_off/input` and another to `/tmp/once_off/output` will allow you to deidentify and save items on your host machine.
 
 
 ## scrub.sh
@@ -25,6 +27,8 @@ To deidentify any json files from `testing/input` into the directory `testing/ou
 ```
 ./scrub.sh testing/input/ testing/output/ .\*.json
 ```
+
+Note that the NLM Scrubber does leave metadata at the bottom of each file- this would have to be removed before parsing the json.
 
 
 ## pyscrubber
