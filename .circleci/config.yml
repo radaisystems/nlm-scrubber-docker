@@ -1,0 +1,59 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            make test_build | cat
+
+  publish:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            make docker_hub | cat
+
+
+workflows:
+  version: 2
+
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: master
+
+  build_master:
+    jobs:
+      - publish:
+          filters:
+            branches:
+              only: master
+
+  daily_publish:
+    triggers:
+      - schedule:
+          # Build at UTC 6:30pm
+          cron: "30 18 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - publish:
+          filters:
+            branches:
+              only: master
