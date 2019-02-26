@@ -25,5 +25,5 @@ clean:
 test_bash: build
 	docker run -ti IMAGE_NAME /bin/bash
 
-docker_hub:
+docker_hub: build
 	docker push ${IMAGE_NAME}:latest
