@@ -26,4 +26,4 @@ if echo "$SCRUBBER_REGEX" | grep -q '\*.*\*' ; then
   error "NLM Scrubber does not support multiple wildcards in regex."
 fi
 
-docker run -it -rm -v $input_path:/tmp/once_off/input -v $output_path:/tmp/once_off/output --env SCRUBBER_REGEX radaisystems/nlm-scrubber
+docker run -it --rm -v $input_path:/tmp/once_off/input -v $output_path:/tmp/once_off/output --env SCRUBBER_REGEX radaisystems/nlm-scrubber
