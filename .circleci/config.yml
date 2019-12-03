@@ -2,6 +2,7 @@ version: 2
 
 jobs:
   build:
+    resource_class: small
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -14,6 +15,7 @@ jobs:
             make test_build | cat
 
   publish:
+    resource_class: small
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
